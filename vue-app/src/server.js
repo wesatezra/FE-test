@@ -72,16 +72,7 @@ export function makeServer({ environment = 'development' } = {}) {
           return { data: { type: 'user', id: json['id'], attributes: json } }
         },
       }),
-      appointment: rootSerializer.extend({
-        include(request, resource) {
-          if (resource) {
-            return Object.keys(this.schema.associationsFor(resource.modelName))
-          }
-        },
-        normalize(json) {
-          return { data: { type: 'appointment', id: json['id'], attributes: json } }
-        },
-      }),
+      appointment: rootSerializer
     },
 
     // Define the routes for users and appointments under the namespace api
