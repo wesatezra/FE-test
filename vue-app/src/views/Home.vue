@@ -39,10 +39,10 @@
       };
     },
 
-    async created() {
+    async mounted() {
       let response = await fetch("/api/users");
       let json = await response.json();
       this.users = json;
     }
-  };
+}
 </script>
