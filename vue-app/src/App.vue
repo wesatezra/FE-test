@@ -1,9 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <v-container fluid class="pa-0">
-        <div id="nav" class="nav">
-
+      <v-container fluid class="pa-0 max-height">
+        <div id="nav" class="nav d-flex flex-row">
           <router-link to="/" class="nav-button">Home</router-link>
           <router-link to="/AddMember"class="nav-button">AddMember</router-link>
         </div>
@@ -41,6 +40,10 @@
   /* removes the ugly outline after click */
   a {
     outline: none;
+  }
+
+  .max-height {
+    height: 100%;
   }
 
 </style>

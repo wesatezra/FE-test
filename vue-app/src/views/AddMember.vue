@@ -1,20 +1,25 @@
 <template>
-    <div class="add-member">
+    <div height="100%" class="add-member d-flex">
         <v-form ref="form" class="add-member-form">
+            <h2>Add Member</h2>
             <v-text-field label="First Name" :rules="nameRules" v-model="firstName"></v-text-field>
             <v-text-field label="Last Name" :rules="nameRules" v-model="lastName"></v-text-field>
             <v-text-field label="Email" :rules="emailRules" v-model="email"></v-text-field>
-            <v-btn
-            :disabled="this.email==''||this.firstName==''||this.lastName==''"
-            class="mr-4"
-            @click="submit">Submit</v-btn>
 
+            <div class="d-flex flex-row align-center button-container">
+                <v-btn
+                :disabled="this.email===''||this.firstName===''||this.lastName===''"
+                class="mr-4"
+                @click="submit">Submit</v-btn> 
+                <div class="validate-msg" v-if="this.showErr">
+                    Please meet the validation criteria.
+                </div>
+            </div>
         </v-form>
     </div>
 </template>
 
 <script>
-
 import { v4 as uuid } from 'uuid';
 
 export default {
@@ -23,6 +28,7 @@ export default {
         firstName: '',
         lastName: '',
         email: '',
+        showErr: false,
         nameRules:[
             v => !!v || 'Name is required',
             v => /^([^0-9]*)$/.test(v) || 'No Numbers fam'
@@ -34,22 +40,27 @@ export default {
     }),
     methods: {
         submit() {
-            fetch("/api/users", {
-                method: 'POST',
-                body: JSON.stringify({
-                    id: uuid(),
-                    firstName: this.firstName,
-                    lastName: this.lastName,
-                    email: this.email
+            if (this.$refs.form.validate()) {
+                this.showErr = false;
+                fetch("/api/users", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: uuid(),
+                        firstName: this.firstName,
+                        lastName: this.lastName,
+                        email: this.email
+                    })
+                }).then(res => {
+                    if(res.ok) {
+                        return res.json();
+                    }
+                }).then(json => {
+                    console.log(json);
+                    this.$refs.form.reset();
                 })
-            }).then(res => {
-                if(res.ok) {
-                    return res.json();
-                }
-            }).then(json => {
-                console.log(json);
-                this.$refs.form.reset();
-            })
+            } else {
+                this.showErr = true;
+            }
         }
     }
 }
@@ -57,9 +68,33 @@ export default {
 
 <style scoped>
     .add-member-form {
-        max-width: 500px;
+        min-width: 450px;
         border-radius: 20px;
         background: #FFFEF2;
         padding: 20px 40px;
+        max-height: 450px;
+        margin: auto 0;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
+
+    .add-member {
+        align-content: center;
+        justify-content: center;
+        background-image: url(../assets/Ezra_Symbol_Social.png);
+        background-size: auto;
+        background-repeat: repeat;
+        height: 100%;
+    }
+
+    .validate-msg {
+        background: red;
+        padding: 8px 3px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .button-container {
+        margin: 5px 0;
+    }
+
 </style>
