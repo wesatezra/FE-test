@@ -3,7 +3,7 @@
     <v-main>
       <v-container fluid class="pa-0">
         <div id="nav" class="nav">
-          
+
           <router-link to="/" class="nav-button">Home</router-link>
           <router-link to="/AddMember"class="nav-button">AddMember</router-link>
         </div>
@@ -20,11 +20,6 @@
 </script>
 
 <style>
-
-  .no-padding {
-    padding: 0;
-  }
-
   .nav {
     background: #0A0F1E;
     color: white;
