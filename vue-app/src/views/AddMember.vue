@@ -2,18 +2,23 @@
     <div height="100%" class="add-member d-flex">
         <v-form ref="form" class="add-member-form">
             <h2>Add Member</h2>
-            <v-text-field label="First Name" :rules="nameRules" v-model="firstName"></v-text-field>
-            <v-text-field label="Last Name" :rules="nameRules" v-model="lastName"></v-text-field>
-            <v-text-field label="Email" :rules="emailRules" v-model="email"></v-text-field>
-
+            <v-text-field label="First Name" :rules="nameRules" v-model="firstName" @input="resets"></v-text-field>
+            <v-text-field label="Last Name" :rules="nameRules" v-model="lastName" @input="resets"></v-text-field>
+            <v-text-field label="Email" :rules="emailRules" v-model="email" @input="resets"></v-text-field>
+            <v-text-field label="Avatar" v-model="avatar"></v-text-field>
             <div class="d-flex flex-row align-center button-container">
                 <v-btn
                 :disabled="this.email===''||this.firstName===''||this.lastName===''"
                 class="mr-4"
                 @click="submit">Submit</v-btn> 
-                <div class="validate-msg" v-if="this.showErr">
-                    Please meet the validation criteria.
-                </div>
+                <v-slide-x-transition>
+                    <v-card class="validate-msg red darken-2 white--text" v-if="this.showErr">
+                        Please meet the validation criteria.
+                    </v-card>
+                    <v-card class="validate-msg green white--text" v-if="this.showSuccess">
+                        Member added!
+                    </v-card>
+                </v-slide-x-transition>
             </div>
         </v-form>
     </div>
@@ -28,7 +33,9 @@ export default {
         firstName: '',
         lastName: '',
         email: '',
+        avatar: '',
         showErr: false,
+        showSuccess: false,
         nameRules:[
             v => !!v || 'Name is required',
             v => /^([^0-9]*)$/.test(v) || 'No Numbers fam'
@@ -48,7 +55,8 @@ export default {
                         id: uuid(),
                         firstName: this.firstName,
                         lastName: this.lastName,
-                        email: this.email
+                        email: this.email,
+                        avatar: this.avatar
                     })
                 }).then(res => {
                     if(res.ok) {
@@ -57,10 +65,17 @@ export default {
                 }).then(json => {
                     console.log(json);
                     this.$refs.form.reset();
+                    this.showSuccess = true;
+
                 })
             } else {
                 this.showErr = true;
             }
+        },
+        
+        resets() {
+            this.showErr = false;
+            this.showSuccess = false;
         }
     }
 }
@@ -83,7 +98,7 @@ export default {
         background-image: url(../assets/Ezra_Symbol_Social.png);
         background-size: auto;
         background-repeat: repeat;
-        height: 100%;
+        height: 100% - 54px;
     }
 
     .validate-msg {

@@ -1,12 +1,13 @@
 <template>
   <v-app>
     <v-main>
-      <v-container fluid class="pa-0 max-height">
-        <div id="nav" class="nav d-flex flex-row">
+      <v-container fluid class="pa-0 max-height d-flex flex-column">
+        <div id="nav" class="nav d-flex flex-row flex-grow-0">
           <router-link to="/" class="nav-button">Home</router-link>
-          <router-link to="/AddMember"class="nav-button">AddMember</router-link>
+          <router-link to="/AddMember" class="nav-button">AddMember</router-link>
+          <router-link to="/Appointment" class="nav-button">Book Appointment</router-link>
         </div>
-        <router-view />
+        <router-view class="flex-grow-1"/>
       </v-container>
     </v-main>
   </v-app>

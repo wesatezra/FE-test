@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import AddMember from '../views/AddMember.vue'
+import Appointment from '../views/Appointment.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/AddMember',
     name: 'AddMember',
     component: AddMember
+  },
+  {
+    path: '/Appointment',
+    name: 'Appointment',
+    component: Appointment
   }
 ]
 

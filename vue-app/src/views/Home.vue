@@ -2,7 +2,6 @@
   <div class="home">
     <v-data-table :headers="headers" :items="users" class="elevation-2">
       <template v-slot:top>
-
         <v-dialog
           max-width="500px" v-model="dialogDelete"
         >
@@ -18,104 +17,105 @@
           </v-card-actions>
           </v-card>
         </v-dialog>
-
         <v-dialog
           max-width="500px" v-model="dialog"
         >
-        <v-card>
-          <v-card-title class="headline grey lighten-2">
-            Edit Member
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col
-                  cols="12"
-                  sm="6"
-                  md="4"
+          <v-card>
+            <v-card-title class="headline grey lighten-2">
+              Edit Member
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    >
+                      <v-text-field
+                        v-model="editedUser.firstName"
+                        label="First Name"
+                      ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    >
+                      <v-text-field
+                        v-model="editedUser.lastName"
+                        label="Last Name"
+                      ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="8"
+                    md="10"
                   >
                     <v-text-field
-                      v-model="editedUser.firstName"
-                      label="First Name"
+                      v-model="editedUser.email"
+                      label="Email"
                     ></v-text-field>
-                </v-col>
-                <v-col
-                  cols="12"
-                  sm="6"
-                  md="4"
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="8"
+                    md="10"
                   >
                     <v-text-field
-                      v-model="editedUser.lastName"
-                      label="Last Name"
+                      v-model="editedUser.avatar"
+                      label="Link to Avatar"
                     ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col
-                  cols="12"
-                  sm="8"
-                  md="10"
-                >
-                  <v-text-field
-                    v-model="editedUser.email"
-                    label="Email"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col
-                  cols="12"
-                  sm="8"
-                  md="10"
-                >
-                  <v-text-field
-                    v-model="editedUser.avatar"
-                    label="Link to Avatar"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+                  </v-col>
+                </v-row>
 
-            </v-container>
-          </v-card-text>
+              </v-container>
+            </v-card-text>
 
-          <v-divider></v-divider>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="primary"
-              text
-              @click="submitEdit()"
-            >
-              Submit
-            </v-btn>
-            <v-btn
-              color="primary"
-              text
-              @click="dialog = false"
-            >
-              Cancel
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="primary"
+                text
+                @click="submitEdit()"
+              >
+                Submit
+              </v-btn>
+              <v-btn
+                color="primary"
+                text
+                @click="dialog = false"
+              >
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-card>
         </v-dialog>        
-          </template>
-          <template v-slot:[`item.actions`]="{item}">
-            <v-icon
-              small
-              class="mr-2"
-              @click="editUser(item)"
-            >
-              mdi-pencil
-            </v-icon>
-            <v-icon
-              small
-              @click="deleteUser(item)"
-            >
-              mdi-delete
-            </v-icon>
-        </template>
+      </template>
+
+      <template v-slot:[`item.avatar`]="{item}">
+        <img v-if="item.avatar" :src="`${item.avatar}`" align="center" justify="center" style="width: 50px; height: 50px"/>
+      </template>
+        <template v-slot:[`item.actions`]="{item}">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editUser(item)"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteUser(item)"
+          >
+            mdi-delete
+          </v-icon>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -123,7 +123,6 @@
 <script>
   export default {
     name: "Home",
-
     data() {
       return {
         headers: [
@@ -165,7 +164,6 @@
       };
     },
     methods: {
-
       setTargetedUser(user) {
         this.editedIndex = this.users.indexOf(user);
         this.editedUser = Object.assign({}, user);
@@ -178,22 +176,20 @@
 
       submitEdit() {
         this.dialog = false;
-
-        // make the call
-
-        // fetch("/api/users", {
-        //   method: "PUT",
-        //   body: JSON.Stringify({
-        //     id: this.editedUser.id,
-        //     firstName: this.editedUser.firstName,
-        //     lastName: this.editedUser.lastName,
-        //     email: this.editedUser.email,
-        //     avatar: this.editedUser.avatar
-        //   })
-        // }).then((res) => {
-        //   alert("hi");
-        // })
-
+        fetch(`/api/users/${this.editedUser.id}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            id: this.editedUser.id,
+            firstName: this.editedUser.firstName,
+            lastName: this.editedUser.lastName,
+            email: this.editedUser.email,
+            avatar: this.editedUser.avatar
+          })
+        }).then((res) => {
+          if(res.ok) {
+            this.fetchUsers();
+          }
+        })
       },
 
       dialogReset() {
@@ -230,6 +226,7 @@
         })
       }
     },
+
     created() {
       this.fetchUsers();
     },
