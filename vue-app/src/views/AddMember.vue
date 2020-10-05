@@ -7,6 +7,7 @@
             <v-text-field label="Email" :rules="emailRules" v-model="email" @input="resets"></v-text-field>
             <v-text-field label="Avatar" v-model="avatar"></v-text-field>
             <div class="d-flex flex-row align-center button-container">
+                <!-- set disabled as computed -->
                 <v-btn
                 :disabled="this.email===''||this.firstName===''||this.lastName===''"
                 class="mr-4"
@@ -63,16 +64,13 @@ export default {
                         return res.json();
                     }
                 }).then(json => {
-                    console.log(json);
                     this.$refs.form.reset();
                     this.showSuccess = true;
-
                 })
             } else {
                 this.showErr = true;
             }
         },
-        
         resets() {
             this.showErr = false;
             this.showSuccess = false;

@@ -98,10 +98,10 @@
         </v-dialog>        
       </template>
 
-      <template v-slot:[`item.avatar`]="{item}">
+      <template #[`item.avatar`]="{item}">
         <img v-if="item.avatar" :src="`${item.avatar}`" align="center" justify="center" style="width: 50px; height: 50px"/>
       </template>
-        <template v-slot:[`item.actions`]="{item}">
+        <template #[`item.actions`]="{item}">
           <v-icon
             small
             class="mr-2"
